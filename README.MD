@@ -8,7 +8,7 @@ I'm also not sure about the saftey of echoing the output, it seems possible to b
 
 Also I'm on Linux and have not been able to test on other platforms. I think that some antiviruses may take objection to running a binary in a temp directory so if someone could test windows compatability I'd appreciate it. *This may not run on Windows*.
 
-![alt text](media/image.png)
+![image the plugin](media/image.png)
 
 ## Installation
 
@@ -64,6 +64,7 @@ Any contribtuions are welcome. There's a few things I want to target but I curre
 * * This also should be gated by some sort of configuration to disable it.  
 * On Helix start writing the libtexprintf binary to the temp file rather than on every invocation (yeah). I couldn't find an "OnHelixStart" and I don't want it to be something you have to enable
 * There are a couple of upstream issues (I think) documented in [tests.tex](tests.tex). If someone wants to take a look and confirm they could send a patch upstream to libtexprintf. 
+* cog.scm has "dependencies", which might be able to bring in the c dependencies at some point?
 
 ## Credits
 
