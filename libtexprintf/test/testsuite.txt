@@ -1,0 +1,1067 @@
+libtexprintf/utftex test file
+run some specific tests
+
+How this test file works:
+Each test consists of a named block with input and reference outputs
+Text inbetween blocks is ignored. One block may have more than one 
+reference outputs. To this end you can specify arguments for which the 
+reference should be obtained. If several arguments produce the same 
+reference you may specify several sets of arguments with one reference 
+output. The argument sets should be separated with '|'
+For Example:
+
+<input> example
+abcd
+<ref> |-S|-A|-F text
+abcd
+<ref> -F mathnormal
+𝑎𝑏𝑐𝑑
+<end>
+
+This creates a block named "example" which tests the input "abcd" and 
+has two reference outputs, the first reference output is "abcd" and 
+should be obtained
+- without arguments
+- with "-S"
+- with "-A"
+- with "-F text"
+The second reference output ("𝑎𝑏𝑐𝑑") is obtained with the argument 
+"-F mathnormal"
+Thus this example produces in total 5 test results, one for each 
+reference/argument combination.
+
+
+################# specific tests
+test raisebox
+<input> raisebox
+a\raisebox{2}{b}c
+<ref> |-S|-A
+ b
+
+a c
+<end>
+
+test integrals
+<input> integral
+\int_a^b f(x) dx
+<ref> |-S
+⌠ᵇ
+⎮  f(x) dx
+⌡ₐ
+<ref> -A
+ b
+/
+|  f(x) dx
+/
+ a
+<ref> -m
+ b
+⌠
+⎮  f(x) dx
+⌡
+ a
+<end>
+
+double integral
+<input> iintegral
+\iint_a^b f(x) dx
+<ref> |-S
+b
+⌠⌠
+⎮⎮ f(x) dx
+⌡⌡
+ᵃ
+<ref> -A
+b
+//
+|| f(x) dx
+//
+a
+<ref> -m
+b
+⌠⌠
+⎮⎮ f(x) dx
+⌡⌡
+a
+<end>
+
+<input> iiint
+\iiint_a^b f(x) dx
+<ref>  | -S
+ b
+⌠⌠⌠
+⎮⎮⎮ f(x) dx
+⌡⌡⌡
+ ᵃ
+<ref> -A
+ b
+///
+||| f(x) dx
+///
+ a
+<ref> -m
+ b
+⌠⌠⌠
+⎮⎮⎮ f(x) dx
+⌡⌡⌡
+ a
+<end>
+
+<input> iiiint
+\iiiint_a^b f(x) dx
+<ref>  | -S
+ b
+⌠⌠⌠⌠
+⎮⎮⎮⎮ f(x) dx
+⌡⌡⌡⌡
+ ᵃ
+<ref> -A
+ b
+////
+|||| f(x) dx
+////
+ a
+<ref> -m
+ b
+⌠⌠⌠⌠
+⎮⎮⎮⎮ f(x) dx
+⌡⌡⌡⌡
+ a
+<end>
+
+n-dimensional integral
+<input> idotsintegral
+\idotsint_a^b f(x) dx
+<ref> |-S
+ b
+⌠ ⌠
+⎮⋯⎮ f(x) dx
+⌡ ⌡
+ ᵃ
+<ref> -A
+ b
+/ /
+|⋯| f(x) dx
+/ /
+ a
+<ref> -m
+ b
+⌠ ⌠
+⎮⋯⎮ f(x) dx
+⌡ ⌡
+ a
+<end>
+
+<input> oint
+\oint_a^b f(x) dx
+<ref>  | -S
+ ⌠ ᵇ
+⸦⎮⸧  f(x) dx
+ ⌡ ₐ
+<ref> -A
+   b
+ /
+(|)  f(x) dx
+ /
+   a
+<ref> -m
+   b
+ ⌠
+⸦⎮⸧  f(x) dx
+ ⌡
+   a
+<end>
+
+<input> oiint
+\oiint_a^b f(x) dx
+<ref>  | -S
+ b
+ ⌠⌠
+⸦⎮⎮⸧ f(x) dx
+ ⌡⌡
+ ᵃ
+<ref> -A
+ b
+ //
+(||) f(x) dx
+ //
+ a
+<ref> -m
+ b
+ ⌠⌠
+⸦⎮⎮⸧ f(x) dx
+ ⌡⌡
+ a
+<end>
+
+
+<input> oiiint
+\oiiint_a^b f(x) dx
+<ref>  | -S
+  b
+ ⌠⌠⌠
+⸦⎮⎮⎮⸧ f(x) dx
+ ⌡⌡⌡
+  ᵃ
+<ref> -A
+  b
+ ///
+(|||) f(x) dx
+ ///
+  a
+<ref> -m
+  b
+ ⌠⌠⌠
+⸦⎮⎮⎮⸧ f(x) dx
+ ⌡⌡⌡
+  a
+<end>
+
+
+<input> oiiiint
+\oiiiint_a^b f(x) dx
+<ref>  | -S
+  b
+ ⌠⌠⌠⌠
+⸦⎮⎮⎮⎮⸧ f(x) dx
+ ⌡⌡⌡⌡
+  ᵃ
+<ref> -A
+  b
+ ////
+(||||) f(x) dx
+ ////
+  a
+<ref> -m
+  b
+ ⌠⌠⌠⌠
+⸦⎮⎮⎮⎮⸧ f(x) dx
+ ⌡⌡⌡⌡
+  a
+<end>
+
+<input> oidotsint
+\oidotsint_a^b f(x) dx
+<ref>  | -S
+  b
+ ⌠ ⌠
+⸦⎮⋯⎮⸧ f(x) dx
+ ⌡ ⌡
+  ᵃ
+<ref> -A
+  b
+ / /
+(|⋯|) f(x) dx
+ / /
+  a
+<ref> -m
+  b
+ ⌠ ⌠
+⸦⎮⋯⎮⸧ f(x) dx
+ ⌡ ⌡
+  a
+<end>
+
+
+<input> overline
+\overline{abc} \overline{a} \overline a
+<ref>   | -S | -m
+▁▁▁
+abc a̅ a̅
+<ref> -A
+___ _ _
+abc a a
+<ref> -a
+▁▁▁ ▁ ▁
+abc a a
+<end>
+
+
+<input> underline
+\underline{abc} \underline{a} \underline a
+<ref>   | -S | -m
+abc a̲ a̲
+───
+<ref> -A
+abc a a
+--- - -
+<ref> -a
+abc a a
+─── ─ ─
+<end>
+
+
+<input> bar
+\bar{abc} \bar{a} \bar a
+<ref>   | -S | -m
+▁▁▁
+abc a̅ a̅
+<ref> -A
+___ _ _
+abc a a
+<ref> -a
+▁▁▁ ▁ ▁
+abc a a
+<ref> -F mathnormal
+▁▁▁
+𝑎𝑏𝑐 𝑎̅ 𝑎̅
+<end>
+
+<input> grave
+\grave{abc} \grave{a} \grave a
+<ref>   | -S | -m
+ `
+abc à à
+<ref> -A
+ `  ` `
+abc a a
+<ref> -a
+ `  ` `
+abc a a
+<ref> -F mathnormal
+ `
+𝑎𝑏𝑐 𝑎̀ 𝑎̀
+<end>
+
+
+
+<input> acute
+\acute{abc} \acute{a} \acute a
+<ref>   | -S | -m
+ ´
+abc á á
+<ref> -A
+ ´  ´ ´
+abc a a
+<ref> -a
+ ´  ´ ´
+abc a a
+<ref> -F mathnormal
+ ´
+𝑎𝑏𝑐 𝑎́ 𝑎́
+<end>
+
+
+<input> hat
+\hat{abc} \hat{a} \hat a
+<ref>   | -S | -m
+ ^
+abc â â
+<ref> -A
+ ^  ^ ^
+abc a a
+<ref> -a
+ ^  ^ ^
+abc a a
+<ref> -F mathnormal
+ ^
+𝑎𝑏𝑐 𝑎̂ 𝑎̂
+<end>
+
+
+<input> tilde
+\tilde{abc} \tilde{a} \tilde a
+<ref>   | -S | -m
+ ~
+abc ã ã
+<ref> -A
+ ~  ~ ~
+abc a a
+<ref> -a
+ ~  ~ ~
+abc a a
+<ref> -F mathnormal
+ ~
+𝑎𝑏𝑐 𝑎̃ 𝑎̃
+<end>
+
+
+<input> breve
+\breve{abc} \breve{a} \breve a
+<ref>   | -A | -S | -m
+ ◡
+abc ă ă
+<end>
+
+<input> dot_s
+\dot{a}
+<ref>   | -S | -m
+ȧ
+<ref> -A
+.
+a
+<end>
+
+<input> dot_l
+\dot{abc}
+<ref>   | -A | -S | -m
+ .
+abc
+<end>
+
+<input> ddot
+\ddot{abc} \ddot{a} \ddot a
+<ref>   | -A | -S | -m
+abc ä ä
+<end>
+
+
+<input> mathring
+\mathring{abc} \mathring{a} \mathring a
+<ref>   | -A | -S | -m
+ ∘
+abc å å
+<end>
+
+
+<input> double_accute
+\H{abc} \H{a} \H a
+<ref>   | -A | -S | -m
+abc a̋ a̋
+<end>
+
+
+<input> check
+\check{abc} \check{a} \check a
+<ref>   | -A | -S | -m
+abc ǎ ǎ
+<end>
+
+
+<input> cedilla
+\c{abc} \c{c} \c c
+<ref>   | -A | -S | -m
+abc ç ç
+<end>
+
+<input> ogonek
+\k{abc} \k{a} \k a
+<ref>   | -A | -S | -m
+abc ą ą
+<end>
+
+<input> utilde
+\utilde{abc} \utilde{c} \utilde c
+<ref>   | -S | -m
+abc c̰ c̰
+ ~
+<ref> -A
+abc c c
+ ~  ~ ~
+<end>
+
+<input> solidus1
+\l{abc} \l{a} \l a
+<ref>   | -A | -S | -m
+abc a̷ a̷
+<end>
+
+<input> not
+\not{abc} \not{a} \not a
+<ref>   | -A | -S | -m
+abc a̸ a̸
+<end>
+
+<input> Lvec
+\Lvec{abc} \Lvec{a} \Lvec a
+<ref>   | -A | -S | -m
+ ←
+abc a⃖ a⃖
+<end>
+
+<input> lvec
+\lvec{abc} \lvec{a} \lvec a
+<ref>   | -A | -S | -m
+ ↼
+abc a⃐ a⃐
+<end>
+
+<input> vec
+\vec{abc} \vec{a} \vec a
+<ref>   | -A | -S | -m
+ →
+abc a⃗ a⃗
+<end>
+
+
+<input> dddot
+\dddot{abc} \dddot{a} \dddot a
+<ref>   | -A | -S | -m
+ …
+abc a⃛ a⃛
+<end>
+
+
+<input> ddddot
+\ddddot{abc} \ddddot{a} \ddddot a
+<ref>   | -A | -S | -m
+abc a⃜ a⃜
+<end>
+
+<input> overleftrightarrow
+\overleftrightarrow{abc} \overleftrightarrow{a} \overleftrightarrow a
+<ref>   | -A | -S | -m
+ ↔
+abc a⃡ a⃡
+<end>
+
+<input> ocommatopright
+\ocommatopright{abc} \ocommatopright{a} \ocommatopright a
+<ref>   | -A | -S | -m
+  ,
+abc a̕ a̕
+<end>
+
+<input> ocommatopright
+\droang{abc} \droang{a} \droang a
+<ref>   | -A | -S | -m
+  ┐
+abc a̚ a̚
+<end>
+
+<input> ocommatopright
+\rightharpoonaccent{abc} \rightharpoonaccent{a} \rightharpoonaccent a
+<ref>   | -A | -S | -m
+ ⇀
+abc a⃑ a⃑
+<end>
+
+<input> widebridgeabove
+\widebridgeabove{abc} \widebridgeabove{a} \widebridgeabove a
+<ref>   | -A | -S | -m
+ ⎴
+abc a⃩ a⃩
+<end>
+
+
+<input> asteraccent
+\asteraccent{abc} \asteraccent{a} \asteraccent a
+<ref>   | -A | -S | -m
+ *
+abc a⃰ a⃰
+<end>
+
+
+<input> candra
+\candra{abc} \candra{a} \candra a
+<ref>   | -A | -S | -m
+ 𝄑
+abc a̐ a̐
+<end>
+
+
+<input> wideutilde
+\wideutilde{abc} \wideutilde{a} \wideutilde a
+<ref>   | -S | -m
+abc a̰ a̰
+ ~
+<ref> -A
+abc a a
+ ~  ~ ~
+<end>
+
+
+<input> threeunderdot
+\threeunderdot{abc} \threeunderdot{a} \threeunderdot a
+<ref>   | -A | -S | -m
+abc a⃨ a⃨
+ …
+<end>
+
+<input> underleftarrow
+\underleftarrow{abc} \underleftarrow{a} \underleftarrow a
+<ref>   | -A | -S | -m
+abc a⃮ a⃮
+ ↼
+<end>
+
+
+<input> underrightarrow
+\underrightarrow{abc} \underrightarrow{a} \underrightarrow a
+<ref>   | -A | -S | -m
+abc a⃯ a⃯
+ →
+<end>
+
+<input> underleftrightarrow
+\underleftrightarrow{abc} \underleftrightarrow{a} \underleftrightarrow a
+<ref>   | -A | -S | -m
+abc a͍ a͍
+ ↔
+<end>
+
+<input> underrightharpoondown
+\underrightharpoondown{abc} \underrightharpoondown{a} \underrightharpoondown a
+<ref>   | -A | -S | -m
+abc a⃬ a⃬
+ ⇁
+<end>
+
+<input> underleftharpoondown
+\underleftharpoondown{abc} \underleftharpoondown{a} \underleftharpoondown a
+<ref>   | -A | -S | -m
+abc a⃭ a⃭
+ ↽
+<end>
+
+
+<input> palh
+\palh{abc} \palh{a} \palh a
+<ref>   | -A | -S | -m
+abc a̡ a̡
+ ◞
+<end>
+
+<input> rh
+\rh{abc} \rh{a} \rh a
+<ref>   | -A | -S | -m
+abc a̢ a̢
+ ◟
+<end>
+
+
+<input> sbbrg
+\sbbrg{abc} \sbbrg{a} \sbbrg a
+<ref>   | -A | -S | -m
+abc a̪ a̪
+ ⎴
+<end>
+
+accent without multi-character support
+<input> sout
+\sout{abc} \sout{a} \sout a
+<ref>   | -A | -S | -m
+abc a̶ a̶
+<end>
+
+
+<input> strike
+\strike{abc} \strike{a} \strike a
+<ref>   | -A | -S | -m
+abc a̶ a̶
+<end>
+
+<input> annuity
+\annuity{abc} \annuity{a} \annuity a
+<ref>   | -A | -S | -m
+abc a⃧ a⃧
+<end>
+
+<input> enclosecircle
+\enclosecircle{abc} \enclosecircle{a} \enclosecircle a
+<ref>   | -A | -S | -m
+abc a⃝ a⃝
+<end>
+
+<input> enclosesquare
+\enclosesquare{abc} \enclosesquare{a} \enclosesquare a
+<ref>   | -A | -S | -m
+abc a⃞ a⃞
+<end>
+
+<input> enclosediamond
+\enclosediamond{abc} \enclosediamond{a} \enclosediamond a
+<ref>   | -A | -S | -m
+abc a⃟ a⃟
+<end>
+
+<input> enclosetriangle
+\enclosetriangle{abc} \enclosetriangle{a} \enclosetriangle a
+<ref>   | -A | -S | -m
+abc a⃤ a⃤
+<end>
+
+<input> vertoverlay
+\vertoverlay{abc} \vertoverlay{a} \vertoverlay a
+<ref>   | -A | -S | -m
+abc a⃒ a⃒
+<end>
+
+test stacking of diacritics
+<input> stack_diacritics
+jul\dot{\ddot{\iota}}a
+<ref>   | -S
+julϊ̇a
+<end> 
+
+backslash. The backslash command produces a symbol but is not included 
+in the symbol table. We test it here
+
+<input> backslash
+\backslash
+<ref> |-S|-A
+\
+<end>
+
+utftex has a "box" command producing an empty space with a given width 
+and height
+<input> box
+ _f\box{2}{2}^q
+<ref> |-S | -A
+    q
+
+
+ f
+<end>
+
+
+test phantom boxes
+<input> phantom
+\sum_{j\in 0,\ldots\, 10 \vphantom{3^{3^{3^j}}}} \sum_{i\in 0,\ldots\, 3^{3^{3^j}}} i\cdot j
+<ref> |-S
+    ⎲         ⎲
+    ⎳         ⎳      i⋅j
+                  3ʲ
+                 3
+j∈0,… 10  i∈0,… 3
+<ref> -A
+   __         __
+   \          \      i⋅j
+   /_         /_
+                   j
+                  3
+                 3
+j∈0,… 10  i∈0,… 3
+<end>
+
+
+test arrays
+<input> array1
+\left[
+\begin{array}{ccc}
+x_{11} & x_{12} & x_{13}\\
+x_{21} & x_{22} & x_{23}\\
+x_{31} & x_{32} & x_{33}
+\end{array}
+\right]
+<ref> |-S
+⎡x₁₁  x₁₂  x₁₃⎤
+⎢x₂₁  x₂₂  x₂₃⎥
+⎣x₃₁  x₃₂  x₃₃⎦
+<ref> -A
++x    x    x  +
+| 11   12   13|
+|x    x    x  |
+| 21   22   23|
+|x    x    x  |
++ 31   32   33+
+<end>
+
+<input> array2
+\left[
+\begin{array}{ccc}
+x_{11} & x_{12} & x_{13}\\
+x_{21} & x_{22} & x_{23}\\
+x_{31} & x_{32} & x_{33}
+\end{array} \left|
+\begin{array}{ccc}
+y_{11} & y_{12} & y_{13}\\
+y_{21} & y_{22} & y_{23}\\
+y_{31} & y_{32} & y_{33}
+\end{array}
+\right.
+\right]
+<ref> |-S
+⎡x₁₁  x₁₂  x₁₃ ⎢y₁₁  y₁₂  y₁₃⎤
+⎢x₂₁  x₂₂  x₂₃ ⎢y₂₁  y₂₂  y₂₃⎥
+⎣x₃₁  x₃₂  x₃₃ ⎢y₃₁  y₃₂  y₃₃⎦
+<ref> -A
++x    x    x   |y    y    y  +
+| 11   12   13 | 11   12   13|
+|x    x    x   |y    y    y  |
+| 21   22   23 | 21   22   23|
+|x    x    x   |y    y    y  |
++ 31   32   33 | 31   32   33+
+<end>
+
+the limits command
+<input> limits
+F(x)\limits_a^x
+<ref> |-S
+ ₓ
+F(x)
+ ᵃ
+<ref> -m |-A
+ x
+F(x)
+ a
+<end>
+
+
+limit
+<input> lim
+\lim_{x\downarrow 1} \frac{1}{x-1}
+<ref> |-S
+     1
+lim ───
+x↓1 x-1
+<ref> -A
+     1
+lim ---
+x↓1 x-1
+<end>
+
+<input> over
+{a\over b}
+<ref> |-S
+a
+─
+b
+<ref> -A
+a
+-
+b
+<end>
+
+<input> choose
+{n\choose k}
+<ref> |-S
+⎛n⎞
+⎜ ⎟
+⎝k⎠
+<ref> -A
+/n\
+| |
+\k/
+<end>
+
+
+<input> exp
+\exp
+<ref> |-S|-F mathnormal|-A
+exp
+<end>
+
+
+<input> primes
+a' a'' a''' a''''
+<ref> |-S
+a′ a″ a‴ a⁗
+<ref> -A
+a' a'' a''' a''''
+<end>
+
+<input> sqrt
+\sqrt[3]{\box{2}{3}}
+<ref>  | -S | -m
+  ┌──┐
+3 │
+╲ │
+ ╲│
+<ref> -A
+  ____
+3 |
+\ |
+ \|
+<end>
+<input> sqrt2
+\sqrt[3000]{\box{2}{3}}
+<ref>  | -S | -m
+     ┌──┐
+3000 │
+   ╲ │
+    ╲│
+<ref> -A
+     ____
+3000 |
+   \ |
+    \|
+<end>
+<input> sqrt3
+\sqrt{\box{2}{3}}
+<ref>  | -S | -m
+  ┌──┐
+  │
+╲ │
+ ╲│
+<ref> -A
+  ____
+  |
+\ |
+ \|
+<end>
+<input> brac1
+\left(\box{2}{3}\right)
+<ref>  | -S | -m
+⎛  ⎞
+⎜  ⎟
+⎝  ⎠
+<ref> -A
+/  \
+|  |
+\  /
+<end>
+<input> brac2
+\left[\box{2}{3}\right]
+<ref>  | -S | -m
+⎡  ⎤
+⎢  ⎥
+⎣  ⎦
+<ref> -A
++  +
+|  |
++  +
+<end>
+<input> brac3
+\left{\box{2}{3}\right}
+<ref>  | -S | -m
+⎧  ⎫
+⎨  ⎬
+⎩  ⎭
+<ref> -A
+/  \
+<  >
+\  /
+<end>
+<input> brac4
+\left<\box{2}{3}\right>
+<ref>  | -S | -m
+ ╱  ╲
+╱    ╲
+╲    ╱
+ ╲  ╱
+<ref> -A
+ /  \
+/    \
+\    /
+ \  /
+<end>
+<input> brac5
+\left|\box{2}{3}\right|
+<ref>  | -S | -m
+⎢  ⎢
+⎢  ⎢
+⎢  ⎢
+<ref> -A
+|  |
+|  |
+|  |
+<end>
+
+For the more special brackets we have the issue that we could also draw 
+some of these in ASCII but I don't...
+
+<input> brac6
+\left\uparrow\box{2}{3}\right\uparrow
+<ref>  | -A | -S | -m
+▲  ▲
+⎢  ⎢
+⎢  ⎢
+<end>
+<input> brac7
+\left\downarrow\box{2}{3}\right\downarrow
+<ref>  | -A | -S | -m
+⎢  ⎢
+⎢  ⎢
+▼  ▼
+<end>
+<input> brac8
+\left\lceil\box{2}{3}\right\rceil
+<ref>  | -A | -S | -m
+⎡  ⎤
+⎢  ⎥
+⎢  ⎥
+<end>
+<input> brac9
+\left\lfloor\box{2}{3}\right\rfloor
+<ref>  | -A | -S | -m
+⎢  ⎥
+⎢  ⎥
+⎣  ⎦
+<end>
+
+test argument parsing
+
+<input> argparse_space
+\frac  {1}{\alpha}
+<ref>  | -S | -m
+1
+─
+α
+<ref> -A
+1
+-
+α
+<end>
+
+<input> argparse_nobrac1
+\frac  {1}\alpha
+<ref>  | -S | -m
+1
+─
+α
+<ref> -A
+1
+-
+α
+<end>
+
+<input> argparse_nobrac2
+\frac1\alpha
+<ref>  | -S | -m
+1
+─
+α
+<ref> -A
+1
+-
+α
+<end>
+
+test greedy operators
+<input> greedyover
+a + b\over c
+<ref>  | -S | -m
+a + b
+─────
+  c
+<ref> -A
+a + b
+-----
+  c
+<end>
+
+<input> greedyover2
+{a + b\over c} + d
+<ref>  | -S | -m
+a + b
+───── + d
+  c
+<ref> -A
+a + b
+----- + d
+  c
+<end>
+
+test whether nested brackets are processed correctly
+<input> greedyover3
+{a {+} b\over c} + d
+<ref>  | -S | -m
+a + b
+───── + d
+  c
+<ref> -A
+a + b
+----- + d
+  c
+<end>
+
+ambigous input. libtexprintf lets
+\over precede over \choose
+and the first appearance over any subsequent
+Note that latex throws and error and tells you it is ambiguous...
+<input> greedyoverchoose
+a\choose b+s\over d
+<ref>  | -S | -m
+⎛ a ⎞
+⎜   ⎟
+⎝b+s⎠
+─────
+  d
+<ref> -A
+/ a \
+|   |
+\b+s/
+-----
+  d
+<end>

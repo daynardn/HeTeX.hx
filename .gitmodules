@@ -1,0 +1,3 @@
+[submodule "libtexprintf"]
+	path = libtexprintf
+	url = https://github.com/bartp5/libtexprintf
