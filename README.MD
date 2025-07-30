@@ -77,3 +77,5 @@ Really hard to find program that helped a ton
 
 This is the vim plugin I got the idea from. Initally I tried to convert this but it was too many lines
 * [nabla.nvim](https://github.com/jbyuki/nabla.nvim) 
+
+Also, all of this is only possible due to the hard work of mattwparas. Thank you!
