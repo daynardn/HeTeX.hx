@@ -13,15 +13,26 @@ Also I'm on Linux and have not been able to test on other platforms. I think tha
 ## Installation
 
 This is a helix plugin made using steel. To install, you can use the `forge` command line tool,
-which also requires having a rust toolchain installed.
+which also requires having a rust toolchain installed. In addition, there are a few dependencies for libtexprintf 
+
+```
+C toolchain
+autoconf
+automake
+make
+pkg-config
+m4
+libtool
+```
 
 You can either clone the repo and then from the root run:
 
 `forge install`
 
-Or you can do:
+Or you can (assuming you have the dependencies installed) do:
 
-`forge pkg install --git TODO`.
+`forge pkg install --git https://github.com/daynardn/HeTeX.hx.git`.
+
 
 This will build and install the library.
 
