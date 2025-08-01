@@ -1,5 +1,7 @@
 # HeTeX: Helix LaTeX preview
 
+> ⚠️ **Warning**: This plugin is **experimental**. It may not work on all systems.
+
 This plugin relies on [libtexprintf](https://github.com/bartp5/libtexprintf/) providing utftex which is a great program converting small latex expressions into ascii.
 
 This plugin uses this as an embedded binary by echoing the output to create a popup. It's a pretty crude approach but it does render the text. I'd like to switch over to the components at some point but at this point they are very verbose (and difficult to write!) and I'm not positive the api will stay the same. If someone wants to merge a patch it'd be very welcome.
