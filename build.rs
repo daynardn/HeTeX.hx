@@ -3,7 +3,7 @@ use std::process::Command;
 
 fn main() {
     let project_dir = PathBuf::from("libtexprintf");
-    let utftex_binary = project_dir.clone().join("src").join("utftex");
+    let utftex_binary = project_dir.join("src").join("utftex");
 
     // We've already built the file. Since it's imported, it'll never be updated
     if utftex_binary.exists() {
