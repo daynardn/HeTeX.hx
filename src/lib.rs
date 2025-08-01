@@ -1,5 +1,6 @@
 use std::{env, fs, process::Command};
 
+use abi_stable::type_level::trait_marker::Error;
 use steel::steel_vm::ffi::{FFIModule, RegisterFFIFn};
 
 steel::declare_module!(build_module);
@@ -25,7 +26,8 @@ fn latex_parse(latex_string: String) -> String {
         use std::os::unix::fs::PermissionsExt;
 
         let mut perms = fs::metadata(&bin_path).unwrap().permissions();
-        perms.set_mode(0o755);
+        perms.set_mode(0o755); // set executable
+        // Note if this unwrap fails, Helix will crash corrupting the shell session
         fs::set_permissions(&bin_path, perms).unwrap();
     }
 
@@ -42,7 +44,7 @@ fn latex_parse(latex_string: String) -> String {
 
     // The echo popup renders with a space at the start of expressions, this is a hack that formats it the way it should appear.
     // I want to make a custom popup to avoid this but as of writing this it is very verbose and poorly documented.
-    formatted_latex_string.replace('\n', " \n ")
+    formatted_latex_string.replace("\n", " \n ")
 }
 
 pub fn build_module() -> FFIModule {
