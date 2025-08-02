@@ -9,5 +9,7 @@ pkgs.mkShell {
     pkgs.autoconf
     pkgs.automake
     pkgs.libtool
+    pkgs.libclang
   ];
+  LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
 }

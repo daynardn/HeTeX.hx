@@ -1,6 +1,7 @@
-use std::{env, fs, process::Command};
+mod bindings; // Bindings for libtexprintf
 
-use abi_stable::type_level::trait_marker::Error;
+use std::ffi::{CStr, CString};
+
 use steel::steel_vm::ffi::{FFIModule, RegisterFFIFn};
 
 steel::declare_module!(build_module);
@@ -14,32 +15,32 @@ fn latex_module() -> FFIModule {
 }
 
 fn latex_parse(latex_string: String) -> String {
-    let bin_path = env::temp_dir().join("utftex");
+    // Calling C FFI so unsafe is required
+    let output = unsafe {
+        // Get a pointer to the LaTeX output
+        let ptr = bindings::stexprintf(
+            CString::new(latex_string)
+                .unwrap_or(CString::new("Failed to parse input!").unwrap_or_default())
+                .into_raw(),
+        );
 
-    // This writes the binary on each invokation, while small is poor practice.
-    // I'd prefer to have an OnEditor start callback, and check and add it and then we know it exists
-    fs::write(&bin_path, include_bytes!("../libtexprintf/src/utftex")).unwrap();
+        // This shouldn't happen, but as a safeguard
+        if ptr.is_null() {
+            return "Failed to render!".to_string();
+        }
 
-    // Set unix permissions
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::PermissionsExt;
+        let rust_output = CStr::from_ptr(ptr).to_string_lossy().to_string();
 
-        let mut perms = fs::metadata(&bin_path).unwrap().permissions();
-        perms.set_mode(0o755); // set executable
-        // Note if this unwrap fails, Helix will crash corrupting the shell session
-        fs::set_permissions(&bin_path, perms).unwrap();
-    }
+        bindings::texfree(ptr);
 
-    let output = Command::new(&bin_path).arg(latex_string).output().unwrap();
+        rust_output
+    };
 
-    fs::remove_file(&bin_path).ok(); // Remove the temp file
-
-    let mut formatted_latex_string: String =
-        String::from_utf8_lossy(&output.stdout).to_string() + " "; // the '+ " "' is to attempt to center the boxes
+    let mut formatted_latex_string: String = output.to_string() + " "; // the '+ " "' is to attempt to center the boxes
 
     // Since the command is echoed, potential attack vector
     // echo '' && notify-send example && echo ''
+    // Therefore we remove all "'" (libtexprintf formats these as "`" for primes)
     formatted_latex_string = formatted_latex_string.replace("'", "");
 
     // The echo popup renders with a space at the start of expressions, this is a hack that formats it the way it should appear.

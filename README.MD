@@ -4,13 +4,13 @@
 
 This plugin relies on [libtexprintf](https://github.com/bartp5/libtexprintf/) providing utftex which is a great program converting small latex expressions into ascii.
 
-This plugin uses this as an embedded binary by echoing the output to create a popup. It's a pretty crude approach but it does render the text. I'd like to switch over to the components at some point but at this point they are very verbose (and difficult to write!) and I'm not positive the api will stay the same. If someone wants to merge a patch it'd be very welcome.
+This plugin embeds the binary and calls it via FFI. I'd like to switch over to the components to render rather than echo at some point but at this point they are very verbose (and difficult to write!) and I'm not positive the api will stay the same. If someone wants to merge a patch it'd be very welcome.
 
-I'm also not sure about the saftey of echoing the output, it seems possible to break out of the containment which I don't like, however since the input is passed to utftex first, you'd need to get utftex to output a dangerous string which I haven't been able to do, either way, exercise mild caution.
+I'm also not sure about the saftey of echoing the output, it seems possible to break out of the containment which I don't like, however since the input is passed to utftex first, and "'" characters are culled, you'd need to get utftex to output a dangerous string which I haven't been able to do, either way, it's worth paying attention to until this plugin uses components.
 
-Also I'm on Linux and have not been able to test on other platforms. I think that some antiviruses may take objection to running a binary in a temp directory so if someone could test windows compatability I'd appreciate it. *This may not run on Windows*.
+Also I'm on Linux and have not been able to test on other platforms. I think that this may be pretty hard to run on windows since you have to build libtexprintf. *This may not run on Windows as is*.
 
-![image the plugin](media/image.png)
+![image of the plugin](media/image.png)
 
 ## Installation
 
@@ -25,6 +25,7 @@ make
 pkg-config
 m4
 libtool
+libclang (may be libclang-dev or similar)
 ```
 
 You can either clone the repo and then from the root run:
@@ -64,7 +65,6 @@ Any contribtuions are welcome. There's a few things I want to target but I curre
 * Autorendering whenever the cursor moves between "\$" ... "\$" ranges. This shouldn't be hard but there are multiple supported deliminators 
 * * This probably should be switched to a nonblocking method first to avoid lagging the editor
 * * This also should be gated by some sort of configuration to disable it.  
-* On Helix start writing the libtexprintf binary to the temp file rather than on every invocation (yeah). I couldn't find an "OnHelixStart" and I don't want it to be something you have to enable
 * There are a couple of upstream issues (I think) documented in [tests.tex](tests.tex). If someone wants to take a look and confirm they could send a patch upstream to libtexprintf. 
 * cog.scm has "dependencies", which might be able to bring in the c dependencies at some point?
 
