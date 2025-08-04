@@ -29,6 +29,7 @@ x^{y^z}
 
 \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}
 
+
 % Note here, libtexprintf renders '2 ]' rather than '2]' causing a rendering issue
 \begin{bmatrix}
 1 & 2 \\
@@ -59,4 +60,32 @@ a \overset{\text{def}}{=} b
 f(x) &= x^2 + 2x + 1 \\
      &= (x + 1)^2
 \end{align}
+
+% Some extra expressions from https://en.wikibooks.org/wiki/LaTeX/Mathematics
+
+( a ), [ b ], \{ c \}, | d |, \| e \|,
+\langle f \rangle, \lfloor g \rfloor,
+\lceil h \rceil, \ulcorner i \urcorner,
+/ j \backslash
+
+A_{m,n} = 
+ \begin{pmatrix}
+  a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+  a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
+  \vdots  & \vdots  & \ddots & \vdots  \\
+  a_{m,1} & a_{m,2} & \cdots & a_{m,n} 
+ \end{pmatrix}
+
+\begin{array}{c|c}
+  1 & 2 \\ 
+  \hline
+  3 & 4
+ \end{array}
+
+% .3em does not work
+M = \begin{bmatrix}
+       \frac{5}{6} & \frac{1}{6} & 0           \\[0.3em]
+       \frac{5}{6} & 0           & \frac{1}{6} \\[0.3em]
+       0           & \frac{5}{6} & \frac{1}{6}
+     \end{bmatrix}
 
