@@ -5,6 +5,10 @@
 }:
 
 pkgs.mkShell {
+  buildInputs = [
+    pkgs.cargo
+  ];
+
   nativeBuildInputs = [
     pkgs.autoconf
     pkgs.automake

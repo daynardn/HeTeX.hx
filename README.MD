@@ -2,11 +2,11 @@
 
 > ⚠️ **Warning**: This plugin is **experimental**. It may not work on all systems.
 
-This plugin relies on [libtexprintf](https://github.com/bartp5/libtexprintf/) providing utftex which is a great program converting small latex expressions into ascii.
+This plugin relies on [libtexprintf](https://github.com/bartp5/libtexprintf/) providing utftex which is a great program converting small LaTeX expressions into ASCII.
 
 This plugin embeds the binary and calls it via FFI. I'd like to switch over to the components to render rather than echo at some point but at this point they are very verbose (and difficult to write!) and I'm not positive the api will stay the same. If someone wants to merge a patch it'd be very welcome.
 
-I'm also not sure about the saftey of echoing the output, it seems possible to break out of the containment which I don't like, however since the input is passed to utftex first, and "'" characters are culled, you'd need to get utftex to output a dangerous string which I haven't been able to do, either way, it's worth paying attention to until this plugin uses components.
+It is worth noting that as of this version, the command calls the helix sh command and echos it to create the dialog. It uses the `'` character and trims them from the utftex output, so from what I can tell it is impossible to break out of the command and execute malicious shell code. However despite this I'm leaving this as a warning to be wary. 
 
 Also I'm on Linux and have not been able to test on other platforms. I think that this may be pretty hard to run on windows since you have to build libtexprintf. *This may not run on Windows as is*.
 
@@ -28,18 +28,22 @@ libtool
 libclang (may be libclang-dev or similar)
 ```
 
-You can either clone the repo and then from the root run:
+If you are on NixOS, you can enter the dev environment provided instead
+```bash
+nix-shell https://github.com/daynardn/HeTeX.hx/archive/main.tar.gz
+```
+
+Then you can either clone the repo and then from the root run:
 
 `forge install`
 
-Or you can (assuming you have the dependencies installed) do:
+Or you can do:
 
 `forge pkg install --git https://github.com/daynardn/HeTeX.hx.git`.
 
-
 This will build and install the library.
 
-You should then be able to use the library like so:
+Add the plugin in your `~/.config/helix/init.scm`:
 
 ```steel
 (require "hetex/hetex.scm")
