@@ -18,6 +18,7 @@ fn main() {
             .current_dir("libtexprintf")
             .arg("--disable-shared")
             .arg("--enable-static")
+            .env("CFLAGS", "-fPIC") // Set as position independent explicitly.
             .status()
             .expect("failed to run configure")
             .success());
